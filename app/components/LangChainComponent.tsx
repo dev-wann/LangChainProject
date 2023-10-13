@@ -2,6 +2,7 @@
 
 import { OpenAI } from 'langchain/llms/openai';
 import { useRef } from 'react';
+import useUserStore from '../stores/UserStore';
 
 interface Props {
   key: string;
@@ -9,14 +10,15 @@ interface Props {
 
 export default function LangChainComponent(props: Props) {
   const resultRef = useRef(null);
+  const { key, prompt } = useUserStore();
   // const llm = new OpenAI({
   //   openAIApiKey: props.key,
   // });
   const onClickHandler = () => {
     if (resultRef.current) {
       // 임시 테스트 용도
-      (resultRef.current as HTMLElement).innerText = `Your key: ${'key'}
-      Your promt: ${'prompt'}`;
+      (resultRef.current as HTMLElement).innerText = `Your key: ${key}
+      Your promt: ${prompt}`;
     }
   };
 

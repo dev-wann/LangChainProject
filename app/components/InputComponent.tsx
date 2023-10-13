@@ -1,6 +1,7 @@
 interface Props {
   label: string;
   placeholder?: string;
+  updateCallback: (val: string) => void;
 }
 
 export default function InputComponent(props: Props) {
@@ -15,6 +16,9 @@ export default function InputComponent(props: Props) {
         type="text"
         className="flex-shrink flex-grow flex-auto leading-normal w-px border h-10 border-grey-light rounded rounded-l-none px-3 relative focus:border-blue focus:shadow"
         placeholder={props.placeholder ? props.placeholder : ''}
+        onChange={(e) => {
+          props.updateCallback(e.target.value);
+        }}
       />
     </div>
   );
