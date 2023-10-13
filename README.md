@@ -5,5 +5,5 @@
   - 추후 LLAMA 버전도 추가 예정
 ### 구현 완료
 ### 사용 기술 스택
-- Front-end: Next.js, TypeScript, Zustand
-- AI: LangChain, OpenAI(GPT)
+- **Front-end**: Next.js, TypeScript, Zustand
+- **AI**: LangChain, OpenAI(GPT)
