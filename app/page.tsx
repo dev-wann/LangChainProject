@@ -5,7 +5,8 @@ import LangChainComponent from './components/LangChainComponent';
 import useUserStore from './stores/UserStore';
 
 export default function Home() {
-  const { setKey, setPrompt } = useUserStore();
+  const setKey = useUserStore((state) => state.setKey);
+  const setPrompt = useUserStore((state) => state.setPrompt);
 
   return (
     <main className="p-14">

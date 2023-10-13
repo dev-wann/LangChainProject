@@ -1,6 +1,5 @@
 'use client';
 
-import { OpenAI } from 'langchain/llms/openai';
 import { useRef } from 'react';
 import useUserStore from '../stores/UserStore';
 
@@ -10,15 +9,16 @@ interface Props {
 
 export default function LangChainComponent(props: Props) {
   const resultRef = useRef(null);
-  const { key, prompt } = useUserStore();
-  // const llm = new OpenAI({
-  //   openAIApiKey: props.key,
-  // });
+  const key = useUserStore((state) => state.key);
+  const prompt = useUserStore((state) => state.prompt);
+  const getAI = useUserStore((state) => state.getAI);
+
   const onClickHandler = () => {
     if (resultRef.current) {
-      // 임시 테스트 용도
-      (resultRef.current as HTMLElement).innerText = `Your key: ${key}
-      Your promt: ${prompt}`;
+      const ai = getAI();
+      ai.predict(prompt).then((res) => {
+        (resultRef.current as unknown as HTMLElement).innerText = res;
+      });
     }
   };
 
