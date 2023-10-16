@@ -1,5 +1,6 @@
 'use client';
 
+import ErrorModalComponent from './components/ErrorModalComponent';
 import InputComponent from './components/InputComponent';
 import LLMComponent from './components/LLMComponent';
 import useUserStore from './stores/UserStore';
@@ -23,6 +24,7 @@ export default function Home() {
         />
         <LLMComponent key="key" />
       </div>
+      <ErrorModalComponent />
     </main>
   );
 }

@@ -1,40 +1,59 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import useUserStore from '../stores/UserStore';
+import ErrorPopupComponent from './ErrorModalComponent';
+import useErrorStore from '../stores/ErrorStore';
 
-interface Props {
-  key: string;
-}
-
-export default function LLMComponent(props: Props) {
+export default function LLMComponent() {
   const resultRef = useRef(null);
+
   const key = useUserStore((state) => state.key);
   const prompt = useUserStore((state) => state.prompt);
   const getAI = useUserStore((state) => state.getAI);
+  const showError = useErrorStore((state) => state.showError);
+  const setErrorDescription = useErrorStore((state) => state.setDescription);
 
   const onClickHandler = () => {
+    // error check
+    if (key === '') {
+      showError();
+      setErrorDescription('API key is missing. Please type valid API key!');
+      return;
+    } else if (prompt === '') {
+      showError();
+      setErrorDescription('Prompt is missing. Please type valid promt!');
+      return;
+    }
+    //process
     if (resultRef.current) {
       const ai = getAI();
-      ai.predict(prompt).then((res) => {
-        (resultRef.current as unknown as HTMLElement).innerText =
-          removeEmptyPrefix(res);
-      });
+      ai.predict(prompt)
+        .then((res) => {
+          (resultRef.current as unknown as HTMLElement).innerText =
+            removeEmptyPrefix(res);
+        })
+        .catch((err) => {
+          showError();
+          setErrorDescription(String(err));
+        });
     }
   };
 
   return (
-    <div className="w-full">
-      <button
-        className="w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded rounded-b-none"
-        onClick={onClickHandler}
-      >
-        Generate Text
-      </button>
-      <div className="border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]">
-        <p className="p-2" ref={resultRef} />
+    <>
+      <div className="w-full">
+        <button
+          className="w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded rounded-b-none"
+          onClick={onClickHandler}
+        >
+          Generate Text
+        </button>
+        <div className="border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]">
+          <p className="p-2" ref={resultRef} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

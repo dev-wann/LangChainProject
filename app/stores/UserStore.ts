@@ -3,10 +3,10 @@ import { OpenAI } from 'langchain/llms/openai';
 
 interface UserState {
   key: string;
-  setKey: (nKey: string) => void;
   prompt: string;
-  setPrompt: (nPrompt: string) => void;
   _ai: null | OpenAI;
+  setKey: (nKey: string) => void;
+  setPrompt: (nPrompt: string) => void;
   getAI: () => OpenAI;
 }
 
