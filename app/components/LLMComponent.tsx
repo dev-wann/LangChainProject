@@ -4,9 +4,11 @@ import { useRef, useState } from 'react';
 import useUserStore from '../stores/UserStore';
 import ErrorPopupComponent from './ErrorModalComponent';
 import useErrorStore from '../stores/ErrorStore';
+import LoadingComponent from './LoadingComponent';
 
 export default function LLMComponent() {
   const resultRef = useRef(null);
+  const [isLoading, setLoading] = useState(false);
 
   const key = useUserStore((state) => state.key);
   const prompt = useUserStore((state) => state.prompt);
@@ -36,7 +38,9 @@ export default function LLMComponent() {
         .catch((err) => {
           showError();
           setErrorDescription(String(err));
-        });
+        })
+        .finally(() => setLoading(false));
+      setLoading(true);
     }
   };
 
@@ -49,8 +53,9 @@ export default function LLMComponent() {
         >
           Generate Text
         </button>
-        <div className="border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]">
+        <div className="relative border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]">
           <p className="p-2" ref={resultRef} />
+          <LoadingComponent isLoading={isLoading} />
         </div>
       </div>
     </>
