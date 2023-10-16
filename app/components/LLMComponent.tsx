@@ -54,7 +54,7 @@ export default function LLMComponent() {
           Generate Text
         </button>
         <div className="relative border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]">
-          <p className="p-2" ref={resultRef} />
+          <p className="p-2 break-keep" ref={resultRef} />
           <LoadingComponent isLoading={isLoading} />
         </div>
       </div>
