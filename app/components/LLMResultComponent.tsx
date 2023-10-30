@@ -2,15 +2,16 @@
 
 import { useRef, useState } from 'react';
 import useUserStore from '../stores/UserStore';
-import ErrorPopupComponent from './ErrorModalComponent';
 import useErrorStore from '../stores/ErrorStore';
 import LoadingComponent from './LoadingComponent';
+import InputComponent from './InputComponent';
 
 export default function LLMComponent() {
   const resultRef = useRef(null);
   const [isLoading, setLoading] = useState(false);
 
   const key = useUserStore((state) => state.key);
+  const setPrompt = useUserStore((state) => state.setPrompt);
   const prompt = useUserStore((state) => state.prompt);
   const getAI = useUserStore((state) => state.getAI);
   const showError = useErrorStore((state) => state.showError);
@@ -46,15 +47,20 @@ export default function LLMComponent() {
 
   return (
     <>
-      <div className="w-full">
+      <div className='w-full'>
+        <InputComponent
+          label='Prompt'
+          placeholder='Type your prompt here.'
+          updateCallback={setPrompt}
+        />
         <button
-          className="w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded rounded-b-none"
+          className='w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded rounded-b-none'
           onClick={onClickHandler}
         >
           Generate Text
         </button>
-        <div className="relative border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]">
-          <p className="p-2 break-keep" ref={resultRef} />
+        <div className='relative border border-t-0 border-blue-500 rounded rounded-t-none min-h-[5rem]'>
+          <p className='p-2 break-keep' ref={resultRef} />
           <LoadingComponent isLoading={isLoading} />
         </div>
       </div>
